@@ -41,8 +41,8 @@ targets:
   #     github:
   #       user: "{{ .github.user }}"
   #       email: "{{ .github.email }}"
-  #       owner: "{{ .github.owner }}"
-  #       repository: "{{ .github.repository }}"
+  #       owner: "{{ requiredEnv .github.owner }}"
+  #       repository: "{{ requiredEnv .github.repository }}"
   #       token: "{{ requiredEnv .github.token }}"
   #       username: "{{ .github.username }}"
   #       branch: "{{ .github.branch }}"
@@ -59,8 +59,8 @@ targets:
       github:
         user: "{{ .github.user }}"
         email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
+        owner: "{{ requiredEnv .github.owner }}"
+        repository: "{{ requiredEnv .github.repository }}"
         token: "{{ requiredEnv .github.token }}"
         username: "{{ .github.username }}"
         branch: "{{ .github.branch }}"
