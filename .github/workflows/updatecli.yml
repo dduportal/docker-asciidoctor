@@ -2,12 +2,14 @@
 name: Updatecli
 
 on:
+  ## Check for dependencies update daily, at 00:00 UTC
   schedule:
-    # Run daily at 00:00 UTC
     - cron: '0 0 * * *'
-  ## Events from external actor, or from code pushed (includes tags pushed)
+  ## Check for updatecli configuration with the "diff" command when new code is pushed
   push:
   pull_request:
+  ## When run manually for validation purpose, or "retrying a failed build"
+  workflow_dispatch:
 jobs:
   updatecli:
     runs-on: ubuntu-20.04
@@ -26,7 +28,7 @@ jobs:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Apply
         ## Update Dependencies Only Once a day
-        if: github.event_name == 'schedule'
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         uses: updatecli/updatecli-action@v1
         with:
           command: apply
