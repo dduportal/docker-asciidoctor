@@ -16,6 +16,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      # - uses: jungwinter/split@v1
+      #   id: split
+      #   with:
+      #     msg: ${{ env.GITHUB_REPOSITORY }}
+      - id: get-repo-infos
+        name: Get Repository Informations
+        run: |
+          owner=$(echo ${{ env.GITHUB_REPOSITORY }} | cut -d'/' -f1)
+          repo=$(echo ${{ env.GITHUB_REPOSITORY }} | cut -d'/' -f2)
+          echo "::set-output name=owner::$owner"
+          echo "::set-output name=repo::$repo"
+      - run: echo "${{steps.get-repo-infos.outputs.owner}}"
+      - run: echo "${{steps.get-repo-infos.outputs.repo}}"
       ## Ensure that the updatecli configuration are valid without waiting for the daily execution from the workflow "Updatecli"
       - name: Diff
         uses: updatecli/updatecli-action@v1
@@ -26,6 +39,8 @@ jobs:
           flags: "--config ./updatecli/updatecli.d --values ./updatecli/values.yaml"
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_NAME: ${{steps.get-repo.outputs.repo}}
+          REPO_OWNER: ${{steps.get-owner.outputs.id}}
       - name: Apply
         ## Update Dependencies Only Once a day
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
