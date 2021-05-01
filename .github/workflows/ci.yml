@@ -34,3 +34,16 @@ jobs:
         env:
           DOCKERHUB_SOURCE_TOKEN: ${{ secrets.DOCKERHUB_SOURCE_TOKEN }}
           DOCKERHUB_TRIGGER_TOKEN: ${{ secrets.DOCKERHUB_TRIGGER_TOKEN }}
+  ## Ensure that the updatecli configuration are valid without waiting for the daily execution from the workflow "Updatecli"
+  updatecli-diff:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Diff
+        uses: updatecli/updatecli-action@v1
+        with:
+          command: diff
+          flags: "--config ./updatecli/updatecli.d --values ./updatecli/values.yaml"
+        env:
+          UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
