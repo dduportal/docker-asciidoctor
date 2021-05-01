@@ -27,8 +27,6 @@ jobs:
           repo=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
           echo "::set-output name=owner::$owner"
           echo "::set-output name=repo::$repo"
-      - run: echo "${{steps.get-repo-infos.outputs.owner}}"
-      - run: echo "${{steps.get-repo-infos.outputs.repo}}"
       ## Ensure that the updatecli configuration are valid without waiting for the daily execution from the workflow "Updatecli"
       - name: Diff
         uses: updatecli/updatecli-action@v1
@@ -39,8 +37,8 @@ jobs:
           flags: "--config ./updatecli/updatecli.d --values ./updatecli/values.yaml"
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO_NAME: ${{steps.get-repo.outputs.repo}}
-          REPO_OWNER: ${{steps.get-owner.outputs.id}}
+          REPO_NAME: ${{steps.get-repo-infos.outputs.repo}}
+          REPO_OWNER: ${{steps.get-repo-infos.outputs.owner}}
       - name: Apply
         ## Update Dependencies Only Once a day
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -50,4 +48,6 @@ jobs:
           flags: "--config ./updatecli/updatecli.d --values ./updatecli/values.yaml"
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_NAME: ${{steps.get-repo-infos.outputs.repo}}
+          REPO_OWNER: ${{steps.get-repo-infos.outputs.owner}}
 ...

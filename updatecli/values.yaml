@@ -6,6 +6,6 @@ github:
   username: "github-actions"
   token: "UPDATECLI_GITHUB_TOKEN"
   branch: "main"
-  owner: "asciidoctor"
-  repository: "docker-asciidoctor"
+  owner: "REPO_OWNER"
+  repository: "REPO_NAME"
 ...
