@@ -19,11 +19,11 @@ jobs:
       - name: check ref
         run: echo ${{ github.ref }}
       - name: only if on a tag
-        if: ${{ contains('refs/tags', github.ref) }}
+        if: github.ref_type == 'tag'
         run: echo TAG
       - name: only if on the main branch
         if: ${{ contains('refs/head/main', github.ref) }}
         run: echo MAIN
       - name: only if on the main branch OR a tag
-        if: ${{ contains('refs/head/main', github.ref) || contains('refs/tags', github.ref) }}
+        if: contains('refs/head/main', github.ref) || github.ref_type == 'tag'
         run: echo MAIN
