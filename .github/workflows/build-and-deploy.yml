@@ -3,7 +3,7 @@ on:
   ## Events from external actor, or from code pushed (includes tags pushed)
   push:
     branches:
-      - main
+      - '*'
     tags:
       - '*'
   pull_request:
@@ -22,7 +22,7 @@ jobs:
         if: github.ref_type == 'tag'
         run: echo TAG
       - name: only if on the main branch
-        if: startsWith(github.ref, 'refs/head/main')
+        if: github.ref_name == 'main'
         run: echo MAIN
       - name: only if on the main branch OR a tag
         if: contains('refs/head/main', github.ref) || github.ref_type == 'tag'
