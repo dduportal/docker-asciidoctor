@@ -25,5 +25,5 @@ jobs:
         if: github.ref_name == 'main'
         run: echo MAIN
       - name: only if on the main branch OR a tag
-        if: contains('refs/head/main', github.ref) || github.ref_type == 'tag'
-        run: echo MAIN
+        if: github.ref_name == 'main' || github.ref_type == 'tag'
+        run: echo asciidoctor:${{ github.ref_name }}
